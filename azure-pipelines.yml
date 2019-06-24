@@ -19,3 +19,7 @@ steps:
   displayName: 'Node Build Project'
 - script: docker build -f Dockerfile -t $(dockerId).docker.io/$(dockerId)/$(imageName) .
   displayName: 'Docker Image Build'
+- script: docker login -u $(dockerId) -p $(pswd) $(dockerId).docker.io
+  displayName: 'ACR Login'
+- script: docker push $(dockerId).docker.io/$(dockerId)/$(imageName)
+  displayName: 'ACR Image Push'
