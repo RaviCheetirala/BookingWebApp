@@ -1,0 +1,11 @@
+{
+    "/Booking/*": {
+      "target": "http://52.187.244.160/Booking",
+      "secure": false,
+      "pathRewrite": {
+        "^/Booking": ""
+      },
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }

@@ -1,0 +1,171 @@
+<div class="main-content">
+    <div class="container-fluid">
+            <div class="row">
+                    <div class="col-md-6">
+                        <div class="card"  style=" background: linear-gradient(60deg, #eef1da, #dcdeca75);">
+                            <div class="card-header card-header-success">
+                                    <h4 class="card-title ">
+                                            <a  class="simple-text">
+                                                <div>
+                                                    <i class="material-icons" style="font-size: 45px;">search</i>
+                                                    <span>PO Search</span>
+                                                </div>
+                                            </a>
+                                        </h4>
+                           </div>
+                           <!-- style=" background: linear-gradient(60deg, #eef1da, #dcdeca75); -->
+                            <div class="card-body">
+          <form>
+              <div class="row">
+                  <div class="col-md-4">
+                  <mat-form-field>
+                    <input matInput [(ngModel)]="poNumber" name="poNumber" id="poNumber" placeholder="PO Number">
+                  </mat-form-field></div>
+                  <div class="col-md-4">
+                        <mat-form-field>
+                          <input matInput [(ngModel)]="dcNumber" name="poNumber" id="poNumber" placeholder="DC Number">
+                        </mat-form-field></div></div>
+                        <div class="row">
+                        <div class="col-md-4">
+                                <mat-form-field>
+                                  <input matInput [(ngModel)]="vendorNumber" name="poNumber" id="poNumber" placeholder="Vendor Number">
+                                </mat-form-field></div>
+                               
+                                <div class="col-md-4">
+                                        <mat-form-field>
+                                          <input matInput [matDatepicker]="picker" [(ngModel)]="orderDate" name="poNumber" id="poNumber" placeholder="Order Date">
+                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                         <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div></div>
+                                        <div class="row">
+                                        <div class="col-md-4">
+                                                <mat-form-field>
+                                                  <input matInput [matDatepicker]="picker2" [(ngModel)]="deliveryDate" name="poNumber" id="poNumber" placeholder="Delivery date">
+                                                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                  <mat-datepicker #picker2></mat-datepicker>
+                                                </mat-form-field></div></div>
+                                            
+                <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="searchPO()">Search PO</button>
+                    <div class="clearfix"> </div>
+             <!--  <div class="col-md-4"> <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="searchPO()">Search PO</button></div> -->
+                        <!--   <div class="clearfix"></div> -->
+            </form></div></div></div>
+            <div class="col-md-12" *ngIf="showSearch">
+                <div class="card" style=" background: linear-gradient(60deg, #eef1da, #dcdeca75);">
+                    <div class="card-header card-header-success">
+                        <h4 class="card-title ">PO Information</h4>
+                       <!--  <p class="card-category"> Here is a subtitle for this table</p> -->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                  <th>PO Number</th>
+                                  <th>DC Number</th>
+                                  <th>Delivery Date</th>
+                                  <th>Vendor No</th>
+                                  <th>Status</th>
+                                  <th>Delivery Dock</th>
+                                  <th>Delivery Time</th>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let result of resultList">                
+                                 <td>
+                                 
+                                                <mat-expansion-panel style="
+                                                box-shadow: none; background: transparent">
+                                                  <mat-expansion-panel-header (click)="display()"> 
+                                                    <mat-panel-title>{{result.poNo}}</mat-panel-title>
+                                                  </mat-expansion-panel-header>
+                                                  <div class="row" *ngIf="showAudit">
+                                                  <mat-accordion multi="true">
+                                                <div class="card" style=" background: linear-gradient(60deg, #f3e9b9, #f9eabf75);">
+                                                  <div class="card-header card-header-warning" style="padding: 5px;">
+                                                        <h4 class="card-title ">
+                                                                <a  class="simple-text">
+                                                                    <div>
+                                                                     <i class="material-icons">assignment</i>
+                                                                        <span> Audit List</span>
+                                                                    </div>
+                                                                </a>
+                                                            </h4>
+                                                     <!--  <p class="card-category"> Here is a subtitle for this table</p> -->
+                                                  </div>
+                                                  <div class="card-body">
+                                                      <div class="table-responsive">
+                                                          <table class="table">
+                                                              <thead class=" text-primary">
+                                                                <th>Previous Delivery Date</th>
+                                                                <th>Previous Delivery Time</th>
+                                                                <th>Changed By</th>
+                                                                <th>Changed On</th>
+                                                                <th>Reason Code</th>
+                                                              </thead>
+                                                              <tbody>
+                                                               <!--  <tr *ngFor="let result of resultList">                
+                                                                                <td>{{result.auditList[0]oldDeliveryDate}}</td>
+                                                                                  <td>{{result.auditList[0].oldDeliveryTime}}</td>
+                                                                                    <td>{{result.auditList[0].changedBy}}</td>
+                                                                                        <td>{{result.auditList[0].changedOn}}</td>
+                                                                                          <td>{{result.auditList[0].reasonCode}}</td>
+                                                                </tr> -->
+
+                                                                 <tr *ngFor="let audit of result.auditList">                
+                                                                                <td>{{audit.oldDeliveryDate}}</td>
+                                                                                  <td>{{audit.oldDeliveryTime}}</td>
+                                                                                    <td>{{audit.changedBy}}</td>
+                                                                                        <td>{{audit.changedOn}}</td>
+                                                                                          <td>{{audit.reasonCode}}</td>
+                                                                </tr> 
+                                                              </tbody>
+                                                          </table>
+                                                               
+                                                       <mat-paginator #paginator style=" background: transparent;"
+                                                        [pageSize]="5"
+                                                       [pageSizeOptions]="[1,2,5, 10]">
+                                                         </mat-paginator>
+                                                      </div>
+                                                  </div></div>
+                                              
+                                                <!--   <div class="row"   style= "box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+                                                  background-color: ivory;">
+                                                    <mat-list role="list" style= "margin-bottom: 15px;">
+                                                        <h3 mat-subheader style="font-size: 15px;font-weight: bolder;">Audit Details</h3>
+                                                        <mat-list-item role="listitem" style="height: 20px;font-size: 13px;">OldDeliveryDock:  {{result.auditList[0].oldDeliveryDock}}</mat-list-item>
+                                                        <mat-list-item role="listitem" style="height: 20px;font-size: 13px;">OldDeliveryDate:  {{result.auditList[0].oldDeliveryDate}}</mat-list-item>
+                                                        <mat-list-item role="listitem" style="height: 20px;font-size: 13px;">OldDeliveryTime:  {{result.auditList[0].oldDeliveryTime}}</mat-list-item>
+                                                        <mat-list-item role="listitem" style="height: 20px;font-size: 13px;">ChangedBy:  {{result.auditList[0].changedBy}}</mat-list-item>
+                                                        <mat-list-item role="listitem" style="height: 20px;font-size: 13px;">ChangedOn:  {{result.auditList[0].changedOn}}</mat-list-item>
+                                                        <mat-list-item role="listitem" style="height: 20px;font-size: 13px;">ReasonCode :  {{result.auditList[0].reasonCode}}</mat-list-item>
+                                                    </mat-list>
+                                                </div> -->
+                                            </mat-accordion>  </div>
+                                                </mat-expansion-panel>
+                                                      
+                               </td>
+                                                  <td>{{result.dcNo}}</td>
+                                                    <td>{{result.deliveryDate}}</td>
+                                                      <td>{{result.vendorNo}}</td>
+                                                        <td [ngStyle]="{'color':result.status === 'Scheduled' ? 'green' : 'red' ,'font-weight': 'bold'}">
+                                                                <a  class="simple-text">
+                                                                        <div>
+                                                                            <span>{{result.status}} </span>
+                                                                            <i class="material-icons" *ngIf="result.status === 'Scheduled'">calendar_today</i>
+                                                                            <i class="material-icons" *ngIf="result.status === 'Exception'">error_outline</i>
+                                                                        </div>
+                                                                    </a>
+                                                               
+                                                        </td>
+                                                          <td>{{result.deliveryDock}}</td>
+                                                            <td>{{result.deliveryTime}}</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div></div></div>
+
+        </div>
+            
