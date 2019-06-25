@@ -23,23 +23,27 @@ export class PosearchComponent implements OnInit {
   result:Result
   columnRows = ['Po Number', 'DC Number', 'Delivery Date', 'Vendor No','Status','Delivery Dock','Delivery Time'];
    columnsToDisplay=['poNo','dcNo','deliveryDate','vendorNo','status','deliveryDock','deliveryTime'];
+   displayedColumns = ['oldDeliveryDate', 'oldDeliveryTime', 'changedBy','changedOn','reasonCode'];
   /* expandedElement: ResultList[]; */
   showAudit: boolean = false;
   showSearch: boolean = false;
   
-
+  dataSource = new MatTableDataSource;
+  dataSource1 = new MatTableDataSource; 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
-  dataSource = new MatTableDataSource<AuditList>(this.auditList);
-
+ @ViewChild(MatPaginator,{static: false}) paginator1: MatPaginator;
+  
   /**
    * Set the paginator after the view init since this component will
    * be able to query its view for the initialized paginator.
    */
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+     this.dataSource.paginator = this.paginator;
+    // this.dataSource1.paginator = this.paginator1;
   }
  
   ngOnInit() {
+    /* this.dataSource.paginator = this.paginator; */
   }
   constructor(public booking: BookingService) { }
 
@@ -50,24 +54,38 @@ export class PosearchComponent implements OnInit {
   deliveryDate:string;
   
   searchPO() {
-
+    this.showAudit = false;
     this.booking.getPO(this.poNumber).subscribe(data => {
     //  this.op = JSON.parse(JSON.stringify(result));
     this.result= data;
     this.resultList=this.result.resultList;
+    this.auditList = this.result.resultList[0].auditList;
+    this.dataSource = new MatTableDataSource(data.resultList);
+    this.dataSource.paginator = this.paginator;
+  //this.dataSource1 = new MatTableDataSource(data.resultList[0].auditList);
+   // this.dataSource1.paginator = this.paginator1;
+    //this.dataSource = this.resultList;
     var parsed = this.result.resultList;
+    
   if(this.resultList != null){
     this.showSearch = true;
   }else{
     this.showSearch = false;
   }
-    
+       /*  for(var x in parsed){ */
 
-        for(var x in parsed){
-          this.auditList = parsed[x].auditList;
-          console.log("AuditListObj"+ this.auditList);
-          console.log("AuditList"+ this.auditList[0].oldDeliveryDate);
-        }
+          
+
+          /* this.auditList= [{oldDeliveryDock:parsed[x].auditList[x].oldDeliveryDock,oldDeliveryDate:parsed[x].auditList[x].oldDeliveryDate,
+            oldDeliveryTime:parsed[x].auditList[x].oldDeliveryTime,changedBy:parsed[x].auditList[x].changedBy,
+            changedOn:parsed[x].auditList[x].changedOn,reasonCode:parsed[x].auditList[x].reasonCode
+            }]; */
+         
+          
+       /*  } */
+        console.log("AuditListObj"+ this.auditList);
+        console.log("AuditList"+ this.auditList[0].oldDeliveryDate);
+        console.log("datasource"+ this.dataSource);
     //this.auditList = this.result.resultList.auditlist[0];
     
     });
